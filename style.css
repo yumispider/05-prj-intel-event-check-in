@@ -259,6 +259,11 @@ button .fas {
   color: #003c71;
 }
 
+#celebrationMessage {
+  margin-top: 20px;
+  font-weight: 500;
+}
+
 /* Counter */
 #attendeeCount {
   color: #0071c5;
