@@ -5,21 +5,21 @@ let totalCount = parseInt(totalCountElement.textContent);
 checkInButton.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent default form submission behavior
 
-  // Display the greeting message
-  const greetingMessage = document.getElementById("greeting");
-  const nameInput = document.getElementById("attendeeName").value;
-  const teamInput = document.getElementById("teamSelect").value;
-
-  let teamName = document
-    .getElementsByClassName(`team-card ${teamInput}`)[0]
-    .querySelector("span.team-name").textContent;
-
-  if (nameInput.trim() !== "" && teamInput !== "") {
-    greetingMessage.textContent = `Welcome, ${nameInput}! You have successfully checked in to ${teamName}.`;
-  }
-
   // Modify the attendance while totalCount is less than 50
   if (totalCount < 50) {
+    // Display the greeting message
+    const greetingMessage = document.getElementById("greeting");
+    const nameInput = document.getElementById("attendeeName").value;
+    const teamInput = document.getElementById("teamSelect").value;
+
+    let teamName = document
+      .getElementsByClassName(`team-card ${teamInput}`)[0]
+      .querySelector("span.team-name").textContent;
+
+    if (nameInput.trim() !== "" && teamInput !== "") {
+      greetingMessage.textContent = `Welcome, ${nameInput}! You have successfully checked in to ${teamName}.`;
+    }
+
     totalCount++;
 
     // Increment the attendance count for the appropriate team
