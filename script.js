@@ -10,18 +10,26 @@ checkInButton.addEventListener("submit", function (event) {
   const nameInput = document.getElementById("attendeeName").value;
   const teamInput = document.getElementById("teamSelect").value;
 
+  let teamName = document
+    .getElementsByClassName(`team-card ${teamInput}`)[0]
+    .querySelector("span.team-name").textContent;
+
   if (nameInput.trim() !== "" && teamInput !== "") {
-    greetingMessage.textContent = `Welcome, ${nameInput}! You have successfully checked in to team ${teamInput}.`;
+    greetingMessage.textContent = `Welcome, ${nameInput}! You have successfully checked in to ${teamName}.`;
   }
 
-  // Increment the attendance count for the appropriate team
-  const teamCountElement = document.getElementById(`${teamInput}Count`);
-  let currentCount = parseInt(teamCountElement.textContent);
-  teamCountElement.textContent = currentCount + 1;
-
-  // Increment the total attendance count
+  // Modify the attendance while totalCount is less than 50
   if (totalCount < 50) {
     totalCount++;
+
+    // Increment the attendance count for the appropriate team
+    const teamCountElement = document.getElementById(`${teamInput}Count`);
+    let currentCount = parseInt(teamCountElement.textContent);
+    teamCountElement.textContent = currentCount + 1;
+
+    // Add the attendee's name to the appropriate team members list
+    const teamMembersElement = document.getElementById(`${teamInput}Members`);
+    teamMembersElement.innerHTML += `<li>${nameInput}</li>`;
   }
 
   totalCountElement.textContent = totalCount;
@@ -31,8 +39,9 @@ checkInButton.addEventListener("submit", function (event) {
   setProgressBar(progressPercent);
 
   if (totalCount == 50) {
+    teamName = getHighestTeam();
     const celebrationMessage = document.getElementById("celebrationMessage");
-    celebrationMessage.innerHTML = `<i class="fas fa-trophy"></i><p>Congratulations! All attendees have checked in!</p>`;
+    celebrationMessage.innerHTML = `<i class="fas fa-trophy"></i><p>Congratulations to ${teamName} with the most attending team members!</p>`;
     celebrationMessage.style.display = "block";
   }
 });
@@ -42,4 +51,24 @@ function setProgressBar(newPercent) {
     const progressBar = document.getElementById("progressBar");
     progressBar.style.width = `${newPercent * 100}%`;
   }
+}
+
+function getHighestTeam() {
+  const teamList = document
+    .getElementsByClassName("teams-grid")[0]
+    .getElementsByClassName("team-card");
+
+  let highestCount = 0;
+  let highestTeam = "";
+
+  for (let i = 0; i < teamList.length; i++) {
+    const teamCount = parseInt(
+      teamList[i].querySelector(".team-count").textContent,
+    );
+    if (teamCount > highestCount) {
+      highestCount = teamCount;
+      highestTeam = teamList[i].querySelector(".team-name").textContent;
+    }
+  }
+  return highestTeam;
 }
