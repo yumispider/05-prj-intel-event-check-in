@@ -1,8 +1,10 @@
-const checkInButton = document.getElementById("checkInForm");
+const checkInForm = document.getElementById("checkInForm");
 const totalCountElement = document.getElementById("attendeeCount");
 let totalCount = parseInt(totalCountElement.textContent);
 
-checkInButton.addEventListener("submit", function (event) {
+let shiftPressed = false;
+
+checkInForm.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent default form submission behavior
 
   // Modify the attendance while totalCount is less than 50
@@ -44,6 +46,11 @@ checkInButton.addEventListener("submit", function (event) {
     celebrationMessage.innerHTML = `<i class="fas fa-trophy"></i><p>Congratulations to ${teamName} with the most attending team members!</p>`;
     celebrationMessage.style.display = "block";
   }
+
+  // Reset the form after submission
+  if (!shiftPressed) {
+    checkInForm.reset();
+  }
 });
 
 function setProgressBar(newPercent) {
@@ -72,3 +79,15 @@ function getHighestTeam() {
   }
   return highestTeam;
 }
+
+checkInForm.addEventListener("keydown", function (event) {
+  if (event.key === "Shift") {
+    shiftPressed = true;
+  }
+});
+
+checkInForm.addEventListener("keyup", function (event) {
+  if (event.key === "Shift") {
+    shiftPressed = false;
+  }
+});
